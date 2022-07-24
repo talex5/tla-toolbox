@@ -1,8 +1,17 @@
 #!/bin/sh
+set -eu
+
+DOCKER_X11="$PWD/unix-x11-docker.socket"
+socat UNIX-LISTEN:"$DOCKER_X11",fork ABSTRACT-CONNECT:/tmp/.X11-unix/X0 &
+SOCAT_PID=${!}
+trap 'kill $SOCAT_PID' EXIT
+
+mkdir -p projects
+
 docker run --rm -it \
-	-e "DISPLAY=$DISPLAY" \
+	-e 'DISPLAY=:0' \
 	--network none \
-	-v /tmp:/tmp \
-	-v "$PWD:/mnt" \
+	-v "$DOCKER_X11:/tmp/.X11-unix/X0" \
+	-v "$PWD/projects:/mnt" \
 	-v "tlaplus-config:/root/.tlaplus" \
-	tla-toolbox /tla/toolbox/toolbox
+	tla-toolbox /opt/TLA+Toolbox/toolbox
