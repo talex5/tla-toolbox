@@ -9,9 +9,10 @@ trap 'kill $SOCAT_PID' EXIT
 mkdir -p projects
 
 docker run --rm -it \
+	-u 1000:1000 \
 	-e 'DISPLAY=:0' \
 	--network none \
 	-v "$DOCKER_X11:/tmp/.X11-unix/X0" \
 	-v "$PWD/projects:/mnt" \
-	-v "tlaplus-config:/root/.tlaplus" \
+	-v "tlaplus-home:/home/user" \
 	tla-toolbox /opt/TLA+Toolbox/toolbox
