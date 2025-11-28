@@ -8,4 +8,5 @@ RUN wget https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.
     rm -f ./tlapm*
 # Stop toolbox from segfaulting (https://github.com/eclipse-platform/eclipse.platform.swt/issues/1937):
 RUN apt-get install -y ibus
+USER 1000
 WORKDIR /mnt
